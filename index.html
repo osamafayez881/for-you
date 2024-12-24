@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Special Message</title>
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      background-color: white; /* خلفية بيضاء */
+      color: black; /* النص بلون أسود */
+      font-family: Arial, sans-serif;
+      font-size: 2rem;
+      text-align: center;
+    }
+    #message {
+      display: none;
+    }
+    .large {
+      font-size: 5rem;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div id="message"></div>
+
+  <script>
+    const messages = [
+      { text: "You know I love you", audio: "love.mp3" },
+      { text: "But", audio: "but.mp3", slow: true },
+      { text: "If nobody told you that today", audio: "nobody.mp3" },
+      { text: "Fuck You", audio: "fuckyou.mp3" },
+      { text: "قوم ذاكر يا علق", audio: "study.mp3" }
+    ];
+
+    const messageDiv = document.getElementById("message");
+
+    let i = 0; // متغير لتتبع الرسائل
+
+    function playAudio(audioFile, slow = false) {
+      const audio = new Audio(audioFile);
+      if (slow) {
+        audio.playbackRate = 0.5; // تشغيل أبطأ
+      }
+      audio.play();
+    }
+
+    function showMessage() {
+      if (i < messages.length) {
+        const message = messages[i];
+        messageDiv.textContent = message.text;
+        messageDiv.style.display = "block";
+
+        // اجعل كلمة "But" و"Fuck You" أكبر
+        if (message.text === "But" || message.text === "Fuck You") {
+          messageDiv.classList.add("large");
+        } else {
+          messageDiv.classList.remove("large");
+        }
+
+        // تشغيل الصوت مع التحقق من السرعة
+        playAudio(message.audio, message.slow);
+
+        i++;
+        setTimeout(() => {
+          messageDiv.style.display = "none";
+          setTimeout(showMessage, 500); // وقت الفاصل بين الرسائل
+        }, 2000); // وقت ظهور كل رسالة
+      } else {
+        i = 0; // إعادة المؤشر إلى البداية
+        showMessage(); // إعادة العرض
+      }
+    }
+
+    showMessage(); // بدء العرض
+  </script>
+</body>
+</html>
